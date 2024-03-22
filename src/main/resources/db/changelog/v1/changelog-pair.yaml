@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_pair_table
+      author: alsu
+      changes:
+        - createTable:
+            tableName: vote_pair
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: first_cat_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: second_cat_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: int
+                  constraints:
+                    nullable: false
+

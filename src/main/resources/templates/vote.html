@@ -1,0 +1,60 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat Voting</title>
+    <style>
+        .cat-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .cat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px;
+        }
+
+        .cat-image {
+            width: 200px;
+            height: 200px;
+            margin: 10px;
+            cursor: pointer;
+        }
+
+        .cat-name {
+            text-align: center;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<table>
+    <thead>
+    <tbody>
+    <tr>
+        <td th:text="${firstCat.getImageUrl()}"></td>
+        <td th:text="${secondCat.getImageUrl()}"></td>
+    </tr>
+    </tbody>
+</table>
+<div class="cat-container">
+    <div class="cat-item">
+        <form action="https://yourserver.com/vote" method="post">
+            <input type="hidden" name="catId" value="1">
+            <input type="image" class="cat-image" src="path/to/cat1.jpg" alt="Cat 1" value="1">
+            <a href="#" class="cat-name">Имя кота 1</a>
+        </form>
+    </div>
+    <div class="cat-item">
+        <form action="https://yourserver.com/vote" method="post">
+            <input type="hidden" name="catId" value="2">
+            <input type="image" class="cat-image" src="path/to/cat2.jpg" alt="Cat 2" value="2">
+            <a href="#" class="cat-name">Имя кота 2</a>
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,34 @@
+spring:
+  application.name: mimimimetr
+  profiles.default: dev
+  jpa:
+    open-in-view: false
+  datasource.driver-class-name: org.postgresql.Driver
+server.port: 8080
+
+---
+spring:
+  config.activate.on-profile: dev
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+
+  image-source: src/main/resources/photos
+  image-count: 5
+
+---
+spring:
+  config.activate.on-profile: test
+  output.ansi.enabled: always
+  jpa:
+    open-in-view: false
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        highlight_sql: true
+
+logging:
+  level:
+    liquibase.executor: debug
