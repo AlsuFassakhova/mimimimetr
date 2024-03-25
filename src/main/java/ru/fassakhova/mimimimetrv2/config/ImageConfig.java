@@ -1,4 +1,4 @@
-package ru.fassakhova.mimimimetrv2.service;
+package ru.fassakhova.mimimimetrv2.config;
 
 
 import lombok.Getter;
@@ -15,13 +15,11 @@ import java.util.stream.Collectors;
 @Setter
 @Getter
 @Service
-public class ImageService {
+public class ImageConfig {
     @Value("${spring.image-source}")
     private String imageSource;
-    @Value(("${spring.image-count}"))
-    private Integer imageCount;
 
-    private Map<String, String> getFilesMap() {
+    public Map<String, String> getFilesMap() {
         File resourcesDir = new File(imageSource);
         File[] files = resourcesDir.listFiles();
 
@@ -30,14 +28,10 @@ public class ImageService {
         return Arrays.stream(files)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toMap(
-                        File::getName,
-                        File::getPath
+                        file -> file.getName().replace(".jpg", ""),
+                        file -> file.getPath().replace("\\", "/")
+                                .substring(file.getPath().indexOf("photos"))
                 ));
-    }
-
-    public String getUrlByName(String name){
-        Map<String, String> filesMap = getFilesMap();
-        return filesMap.get(name+".jpg");
     }
 }
 

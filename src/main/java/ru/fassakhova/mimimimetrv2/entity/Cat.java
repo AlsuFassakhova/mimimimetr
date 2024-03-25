@@ -1,17 +1,21 @@
 package ru.fassakhova.mimimimetrv2.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
-@Setter
 @Getter
+@Setter
+@NoArgsConstructor
+@ToString
 @Entity
 @Table(name = "cats")
-public class Cat extends AbstractEntity{
-
+public class Cat{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long catId;
     @Column(name = "name")
     private String name;
     @Column(name = "image_url")
@@ -27,14 +31,14 @@ public class Cat extends AbstractEntity{
         Cat cat = (Cat) o;
 
         if (votes != cat.votes) return false;
-        if (!getId().equals(cat.getId())) return false;
+        if (!catId.equals(cat.catId)) return false;
         if (!name.equals(cat.name)) return false;
         return imageUrl.equals(cat.imageUrl);
     }
 
     @Override
     public int hashCode() {
-        int result = getId().hashCode();
+        int result = catId.hashCode();
         result = 31 * result + name.hashCode();
         result = 31 * result + imageUrl.hashCode();
         result = 31 * result + votes;

@@ -5,25 +5,31 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.fassakhova.mimimimetrv2.entity.User;
+import ru.fassakhova.mimimimetrv2.entity.dto.UserDTO;
 import ru.fassakhova.mimimimetrv2.repository.UserRepository;
 
-import java.util.List;
+import java.util.Objects;
+
 @RequiredArgsConstructor
 @Service
 public class UserService {
     private final UserRepository userRepository;
 
     @Transactional
-    public User createNewUser(String name) {
-        User user = new User();
-        user.setName(name);
+    public User createNewUser(UserDTO userDTO) {
+        User user = userRepository.findByNameAndNick(userDTO.getName(), userDTO.getNick());
+        if (Objects.isNull(user)) {
 
-        userRepository.save(user);
-        System.out.println("юзер сохранен");
-        return user;
+            User newUser = new User();
+            newUser.setName(userDTO.getName());
+            newUser.setNick(userDTO.getNick());
+            save(newUser);
+
+            return newUser;
+        } else return null;
     }
 
-    public void save(User user){
+    public void save(User user) {
         userRepository.save(user);
     }
 }

@@ -7,4 +7,5 @@ import ru.fassakhova.mimimimetrv2.entity.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+    User findByNameAndNick(String name, String nick);
 }

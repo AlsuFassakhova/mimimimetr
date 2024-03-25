@@ -2,23 +2,24 @@ package ru.fassakhova.mimimimetrv2.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.ArrayList;
-import java.util.List;
-
-@Setter
 @Getter
+@Setter
+@NoArgsConstructor
+@ToString
 @Entity
 @Table(name = "users")
-public class User extends AbstractEntity{
-
+public class User{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long userId;
     @Column(name = "name")
     private String name;
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    @ToString.Exclude
-    private List<VotePair> pairs = new ArrayList<>();
+    @Column(name = "nick")
+    private String nick;
 
     @Override
     public boolean equals(Object o) {
@@ -27,16 +28,16 @@ public class User extends AbstractEntity{
 
         User user = (User) o;
 
-        if (!getId().equals(user.getId())) return false;
+        if (!userId.equals(user.userId)) return false;
         if (!name.equals(user.name)) return false;
-        return pairs.equals(user.pairs);
+        return nick.equals(user.nick);
     }
 
     @Override
     public int hashCode() {
-        int result = getId().hashCode();
+        int result = userId.hashCode();
         result = 31 * result + name.hashCode();
-        result = 31 * result + pairs.hashCode();
+        result = 31 * result + nick.hashCode();
         return result;
     }
 }

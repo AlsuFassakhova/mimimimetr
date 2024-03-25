@@ -4,18 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.fassakhova.mimimimetrv2.service.CatService;
+import ru.fassakhova.mimimimetrv2.service.InitService;
 
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/welcome")
-public class HelloController {
-    private final CatService catService;
+public class InitController {
+    private final InitService initService;
 
     @GetMapping
     public String welcome() {
-        catService.initCats();
-
+        initService.init();
         return "welcome";
     }
 }

@@ -7,7 +7,7 @@ databaseChangeLog:
             tableName: users
             columns:
               - column:
-                  name: id
+                  name: user_id
                   type: bigint
                   autoIncrement: true
                   constraints:
@@ -15,6 +15,11 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: nick
                   type: varchar(255)
                   constraints:
                     nullable: false

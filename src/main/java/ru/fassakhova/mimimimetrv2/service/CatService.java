@@ -1,48 +1,67 @@
 package ru.fassakhova.mimimimetrv2.service;
 
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.fassakhova.mimimimetrv2.config.ImageConfig;
 import ru.fassakhova.mimimimetrv2.entity.Cat;
+import ru.fassakhova.mimimimetrv2.entity.dto.CatDto;
+import ru.fassakhova.mimimimetrv2.entity.dto.CatMapper;
 import ru.fassakhova.mimimimetrv2.repository.CatRepository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
 public class CatService {
     private final CatRepository catRepository;
-    private final ImageService imageService;
+    private final ImageConfig imageService;
+    private final CatMapper catMapper;
 
     public List<Cat> findAllCats() {
         return catRepository.findAll();
     }
 
+    @Transactional
     public void initCats() {
-        System.out.println("Старт инит котов");
-        Integer count = imageService.getImageCount();
-        for (int i = 1; i <= count; i++) {
+        Map<String, String> imageFiles = imageService.getFilesMap();
+
+        for (String name : imageFiles.keySet()) {
             Cat cat = new Cat();
             cat.setVotes(0);
-            String name = "cat" + i;
             cat.setName(name);
-            cat.setImageUrl(imageService.getUrlByName(name));
+            cat.setImageUrl("/" + imageFiles.get(name));
+
             saveCat(cat);
-            System.out.println("кот " + cat.getName() + "создан");
+            System.out.println("кот " + cat + " создан");
         }
     }
 
-    public void increaseVotesValue(Long id) {
-        Cat cat = catRepository.findById(id).orElseThrow();
-        cat.setVotes(cat.getVotes() + 1);
-        catRepository.save(cat);
+    @Transactional
+    public void increaseVotesValue(Long catId) {
+        Cat cat = catRepository.findById(catId).orElse(null);
+        if (cat != null) {
+            cat.setVotes(cat.getVotes() + 1);
+            catRepository.save(cat);
+        } else {
+            throw new EntityNotFoundException();
+        }
     }
 
     public void saveCat(Cat cat) {
         catRepository.save(cat);
     }
 
-    public List<Cat> getTopCats() {
-        return catRepository.findTop10ByVotesDesc();
+    public List<CatDto> getTopCats() {
+        List<Cat> cats = catRepository.findTop10ByVotesDesc();
+        List<CatDto> catsDto = new ArrayList<>();
+        for (Cat cat : cats) {
+            catsDto.add(catMapper.entityToDto(cat));
+        }
+        return catsDto;
     }
 }

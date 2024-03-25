@@ -7,7 +7,7 @@ databaseChangeLog:
             tableName: vote_pair
             columns:
               - column:
-                  name: id
+                  name: pair_id
                   type: int
                   autoIncrement: true
                   constraints:
@@ -23,9 +23,5 @@ databaseChangeLog:
                   type: int
                   constraints:
                     nullable: false
-              - column:
-                  name: user_id
-                  type: int
-                  constraints:
-                    nullable: false
+
 

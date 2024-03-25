@@ -14,21 +14,9 @@ spring:
     username: ${DB_USER}
     password: ${DB_PASSWORD}
 
-  image-source: src/main/resources/photos
-  image-count: 5
-
----
-spring:
-  config.activate.on-profile: test
-  output.ansi.enabled: always
-  jpa:
-    open-in-view: false
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-        highlight_sql: true
+  image-source: ${IMAGE_SOURCE}
 
 logging:
   level:
     liquibase.executor: debug
+    root: info

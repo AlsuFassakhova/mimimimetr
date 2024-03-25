@@ -12,4 +12,5 @@ import java.util.List;
 public interface CatRepository extends JpaRepository<Cat, Long> {
     @Query("SELECT c.name, c.imageUrl, c.votes FROM Cat c ORDER BY c.votes desc LIMIT 10")
     List<Cat> findTop10ByVotesDesc();
+
 }

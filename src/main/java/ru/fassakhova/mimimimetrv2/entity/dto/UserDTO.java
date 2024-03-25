@@ -5,9 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CatDto {
+public class UserDTO {
     private String name;
-    private int votes;
-    private String imageUrl;
+    private String nick;
 
 }
