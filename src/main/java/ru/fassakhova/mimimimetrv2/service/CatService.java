@@ -12,7 +12,6 @@ import ru.fassakhova.mimimimetrv2.entity.dto.CatDto;
 import ru.fassakhova.mimimimetrv2.entity.dto.CatMapper;
 import ru.fassakhova.mimimimetrv2.repository.CatRepository;
 
-import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
