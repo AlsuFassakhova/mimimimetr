@@ -4,6 +4,7 @@ package ru.fassakhova.mimimimetrv2.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,8 +21,9 @@ public class CatController {
 
     private final CatService catService;
 
-    @PostMapping("/top")
+    @GetMapping("/top")
     public String getTopCats(Model model) {
+
         List<CatDto> cats = catService.getTopCats();
         model.addAttribute("cats", cats);
 
@@ -29,7 +31,7 @@ public class CatController {
     }
 
     @PostMapping("/change-votes")
-    public String changeVotes(@RequestParam Long catId) {
+    public String addVote(@RequestParam Long catId) {
         catService.increaseVotesValue(catId);
         return "redirect:/voting";
     }

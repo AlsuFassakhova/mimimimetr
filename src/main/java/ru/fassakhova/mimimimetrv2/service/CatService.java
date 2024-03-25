@@ -3,6 +3,7 @@ package ru.fassakhova.mimimimetrv2.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.fassakhova.mimimimetrv2.config.ImageConfig;
@@ -11,6 +12,7 @@ import ru.fassakhova.mimimimetrv2.entity.dto.CatDto;
 import ru.fassakhova.mimimimetrv2.entity.dto.CatMapper;
 import ru.fassakhova.mimimimetrv2.repository.CatRepository;
 
+import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -57,9 +59,10 @@ public class CatService {
     }
 
     public List<CatDto> getTopCats() {
-        List<Cat> cats = catRepository.findTop10ByVotesDesc();
+        List<Cat> cats = catRepository.findTopTenByVotesDesc(PageRequest.of(0,10));
         List<CatDto> catsDto = new ArrayList<>();
-        for (Cat cat : cats) {
+
+        for(Cat cat:cats){
             catsDto.add(catMapper.entityToDto(cat));
         }
         return catsDto;

@@ -25,7 +25,6 @@ public class VotePairController {
 
         if (!pairs.isEmpty()) {
 
-            System.out.println("все ок, достаем пары");
             for (VotePair pair : pairs) {
                 model.addAttribute("firstCat", pair.getFirstCat());
                 model.addAttribute("secondCat", pair.getSecondCat());
@@ -34,8 +33,6 @@ public class VotePairController {
                 return "voting";
             }
         }
-
-        System.out.println("пары закончились");
         return "redirect:/cats/top";
     }
 

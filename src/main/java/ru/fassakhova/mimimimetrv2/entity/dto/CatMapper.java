@@ -8,7 +8,6 @@ public class CatMapper {
    public CatDto entityToDto(Cat cat){
         CatDto dto = new CatDto();
         dto.setName(cat.getName());
-        dto.setVotes(cat.getVotes());
         dto.setImageUrl(cat.getImageUrl());
 
         return dto;

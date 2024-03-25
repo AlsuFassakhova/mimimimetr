@@ -7,7 +7,5 @@ import lombok.Setter;
 @Setter
 public class CatDto {
     private String name;
-    private int votes;
     private String imageUrl;
-
 }

@@ -30,16 +30,16 @@
 <div class="cat-container">
     <div class="cat-item">
         <form method="post" th:action="@{/cats/change-votes}">
-            <input type="hidden" th:name="catId" th:value="${firstCat.getCatId()}">
-            <input type="image" th:src="@{${firstCat.getImageUrl()}}" alt="First Cat Image" class="cat-image">
-            <input type="submit" th:value="${firstCat.getName()}" class="cat-name">
+            <input type="hidden" th:name="catId" th:value="${firstCat.catId}">
+            <input type="image" th:src="@{${firstCat.imageUrl}}" alt="First Cat Image" class="cat-image">
+            <input type="submit" th:value="${firstCat.name}" class="cat-name">
         </form>
     </div>
     <div class="cat-item">
         <form method="post" th:action="@{/cats/change-votes}">
-            <input type="hidden" th:name="catId" th:value="${secondCat.getCatId()}">
-            <input type="image" th:src="@{${secondCat.getImageUrl()}}" alt="Second Cat Image" class="cat-image">
-            <input type="submit" th:value="${secondCat.getName()}" class="cat-name">
+            <input type="hidden" th:name="catId" th:value="${secondCat.catId}">
+            <input type="image" th:src="@{${secondCat.imageUrl}}" alt="Second Cat Image" class="cat-image">
+            <input type="submit" th:value="${secondCat.name}" class="cat-name">
         </form>
     </div>
 </div>
