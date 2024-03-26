@@ -4,6 +4,7 @@ package ru.fassakhova.mimimimetrv2.config;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -12,9 +13,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-@Setter
-@Getter
-@Service
+@Configuration
 public class ImageConfig {
     @Value("${spring.image-source}")
     private String imageSource;

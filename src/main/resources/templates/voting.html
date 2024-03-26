@@ -29,7 +29,7 @@
 <body>
 <div class="cat-container">
     <div class="cat-item">
-        <form method="post" th:action="@{/cats/change-votes}">
+        <form method="post" th:action="@{/voting}">
             <input type="hidden" th:name="catId" th:value="${firstCat.catId}">
             <input type="image" th:src="@{${firstCat.imageUrl}}" alt="First Cat Image" class="cat-image">
             <input type="submit" th:value="${firstCat.name}" class="cat-name">

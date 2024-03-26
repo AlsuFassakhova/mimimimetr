@@ -15,6 +15,7 @@ import ru.fassakhova.mimimimetrv2.repository.CatRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -38,18 +39,18 @@ public class CatService {
             cat.setImageUrl("/" + imageFiles.get(name));
 
             saveCat(cat);
-            System.out.println("кот " + cat + " создан");
         }
     }
 
     @Transactional
     public void increaseVotesValue(Long catId) {
-        Cat cat = catRepository.findById(catId).orElse(null);
-        if (cat != null) {
-            cat.setVotes(cat.getVotes() + 1);
-            catRepository.save(cat);
-        } else {
-            throw new EntityNotFoundException();
+        if (catId != null) {
+            Optional<Cat> catOptional = catRepository.findById(catId);
+            if (catOptional.isPresent()) {
+                catRepository.incrementVotes(catOptional.get().getCatId());
+            } else {
+                throw new EntityNotFoundException();
+            }
         }
     }
 
@@ -58,10 +59,10 @@ public class CatService {
     }
 
     public List<CatDto> getTopCats() {
-        List<Cat> cats = catRepository.findTopTenByVotesDesc(PageRequest.of(0,10));
+        List<Cat> cats = catRepository.findTopTenByVotesDesc(PageRequest.of(0, 10));
         List<CatDto> catsDto = new ArrayList<>();
 
-        for(Cat cat:cats){
+        for (Cat cat : cats) {
             catsDto.add(catMapper.entityToDto(cat));
         }
         return catsDto;

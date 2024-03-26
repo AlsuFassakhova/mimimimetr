@@ -1,22 +1,14 @@
+server.port: 8080
 spring:
   application.name: mimimimetr
-  profiles.default: dev
-  jpa:
-    open-in-view: false
-  datasource.driver-class-name: org.postgresql.Driver
-server.port: 8080
-
----
-spring:
-  config.activate.on-profile: dev
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+  image-source: src/main/resources/static/photos
 
-  image-source: ${IMAGE_SOURCE}
 
-logging:
-  level:
-    liquibase.executor: debug
-    root: info
+
