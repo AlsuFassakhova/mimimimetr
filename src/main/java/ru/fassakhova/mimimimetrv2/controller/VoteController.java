@@ -4,7 +4,8 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import ru.fassakhova.mimimimetrv2.entity.Pair;
 import ru.fassakhova.mimimimetrv2.entity.Vote;
 import ru.fassakhova.mimimimetrv2.entity.dto.CatDto;
@@ -23,10 +24,8 @@ public class VoteController {
     private final PairService pairService;
 
     @PostMapping("/voting")
-    public String catVoting(@ModelAttribute("name") String nickName,
-                            @ModelAttribute("catId") Long catId,
+    public String catVoting(@ModelAttribute("catId") Long catId,
                             Model model, HttpSession session) {
-        session.setAttribute("name", nickName);
 
         String user = (String) session.getAttribute("name");
         catService.increaseVotesValue(catId);
@@ -35,7 +34,7 @@ public class VoteController {
         List<Pair> pairs = pairService.findAllPairs();
 
         if (votes.isEmpty()) {
-            Pair pair = pairs.get(new Random().nextInt(0, pairs.size() - 1));
+            Pair pair = pairs.get(new Random().nextInt(pairs.size()));
             voting(model, pair, user);
             return "voting";
         }
@@ -43,7 +42,7 @@ public class VoteController {
         for (Pair pair : pairs) {
             for (Vote vote : votes) {
                 if (!vote.getPair().equals(pair)) {
-                    voting(model, pair, nickName);
+                    voting(model, pair, user);
                     return "voting";
                 }
             }
@@ -52,6 +51,13 @@ public class VoteController {
         model.addAttribute("cats", cats);
 
         return "top";
+    }
+
+    @PostMapping("/login")
+    public String userLogin(@ModelAttribute("name") String nickName,
+                            HttpSession session) {
+        session.setAttribute("name", nickName);
+        return "redirect:/voting";
     }
 
     private void voting(Model model, Pair pair, String user) {
