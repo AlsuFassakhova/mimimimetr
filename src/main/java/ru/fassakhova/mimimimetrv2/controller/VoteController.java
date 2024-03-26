@@ -1,19 +1,20 @@
+
 package ru.fassakhova.mimimimetrv2.controller;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.fassakhova.mimimimetrv2.entity.Pair;
-import ru.fassakhova.mimimimetrv2.entity.Vote;
-import ru.fassakhova.mimimimetrv2.entity.dto.CatDto;
 import ru.fassakhova.mimimimetrv2.service.CatService;
 import ru.fassakhova.mimimimetrv2.service.PairService;
 import ru.fassakhova.mimimimetrv2.service.VoteService;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 @Controller
@@ -23,46 +24,38 @@ public class VoteController {
     private final CatService catService;
     private final PairService pairService;
 
-    @PostMapping("/voting")
+    @GetMapping("/")
+    public String voting(HttpSession session, Model model) {
+        String userName = (String) session.getAttribute("name");
+        if (Objects.isNull(userName)) {
+            return "welcome";
+        }
+
+        List<Pair> pairs = pairService.findUnvotedPairsByUsername(userName);
+
+        if (pairs.isEmpty()) {
+            model.addAttribute("cats", catService.getTopCats());
+            return "top";
+        }
+
+        Pair pair = pairs.get(new Random().nextInt(pairs.size()));
+        model.addAttribute("pair", pair);
+        return "voting";
+    }
+
+    @PostMapping("/")
     public String catVoting(@ModelAttribute("catId") Long catId,
-                            Model model, HttpSession session) {
+                            @ModelAttribute("pairId") Long pairId,
+                            HttpSession session) {
 
         String user = (String) session.getAttribute("name");
+        if (Objects.isNull(user)) {
+            return "welcome";
+        }
+
         catService.increaseVotesValue(catId);
+        voteService.addNewVote(pairId, user);
 
-        List<Vote> votes = voteService.getByUserName(user);
-        List<Pair> pairs = pairService.findAllPairs();
-
-        if (votes.isEmpty()) {
-            Pair pair = pairs.get(new Random().nextInt(pairs.size()));
-            voting(model, pair, user);
-            return "voting";
-        }
-
-        for (Pair pair : pairs) {
-            for (Vote vote : votes) {
-                if (!vote.getPair().equals(pair)) {
-                    voting(model, pair, user);
-                    return "voting";
-                }
-            }
-        }
-        List<CatDto> cats = catService.getTopCats();
-        model.addAttribute("cats", cats);
-
-        return "top";
-    }
-
-    @PostMapping("/login")
-    public String userLogin(@ModelAttribute("name") String nickName,
-                            HttpSession session) {
-        session.setAttribute("name", nickName);
-        return "redirect:/voting";
-    }
-
-    private void voting(Model model, Pair pair, String user) {
-        voteService.addNewVote(pair, user);
-        model.addAttribute("firstCat", pair.getFirstCat());
-        model.addAttribute("secondCat", pair.getSecondCat());
+        return "redirect:/";
     }
 }

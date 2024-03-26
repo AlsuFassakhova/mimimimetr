@@ -1,11 +1,8 @@
 package ru.fassakhova.mimimimetrv2.config;
 
 
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.Arrays;

@@ -6,23 +6,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.fassakhova.mimimimetrv2.entity.Cat;
 import ru.fassakhova.mimimimetrv2.entity.Pair;
-import ru.fassakhova.mimimimetrv2.repository.VotePairRepository;
+import ru.fassakhova.mimimimetrv2.repository.PairRepository;
+import ru.fassakhova.mimimimetrv2.repository.VoteRepository;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 @RequiredArgsConstructor
 @Service
 public class PairService {
 
     private final CatService catService;
-    private final VotePairRepository pairRepository;
+    private final PairRepository pairRepository;
+    private final VoteRepository voteRepository;
 
     public List<Pair> findAllPairs() {
-        List<Pair> pairs = pairRepository.findAll();
-        Collections.shuffle(pairs, new Random());
-        return pairs;
+        return pairRepository.findAll();
     }
 
     @Transactional
@@ -37,5 +35,13 @@ public class PairService {
                 pairRepository.save(pair);
             }
         }
+    }
+
+    public List<Pair> findUnvotedPairsByUsername(String userName) {
+        List<Pair> votedPairs = voteRepository.findPairsByUserName(userName);
+        List<Pair> allPairs = findAllPairs();
+
+        allPairs.removeAll(votedPairs);
+        return allPairs;
     }
 }

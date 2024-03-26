@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import ru.fassakhova.mimimimetrv2.entity.Pair;
 
 @Repository
-public interface VotePairRepository extends JpaRepository<Pair, Long> {
+public interface PairRepository extends JpaRepository<Pair, Long> {
 
 }

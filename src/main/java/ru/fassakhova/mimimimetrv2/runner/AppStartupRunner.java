@@ -15,7 +15,7 @@ public class AppStartupRunner implements ApplicationRunner {
     private final PairService pairService;
 
     @Override
-    public void run(ApplicationArguments args) {
+    public void run(ApplicationArguments args){
         if (catService.findAllCats().isEmpty()) {
             catService.initCats();
         }
