@@ -35,6 +35,7 @@ public class VoteController {
 
         if (pairs.isEmpty()) {
             model.addAttribute("cats", catService.getTopCats());
+            session.removeAttribute("name");
             return "top";
         }
 
